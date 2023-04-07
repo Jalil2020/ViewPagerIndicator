@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import androidx.viewpager2.widget.ViewPager2
+import uz.jalil.viewpager_indicator.DotsIndicator
 
 class MainActivity : AppCompatActivity() {
     @SuppressLint("MissingInflatedId")
@@ -13,18 +14,16 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         val vp = findViewById<ViewPager2>(R.id.vp_slide)
-        val adapter = PagerAdapter(arrayListOf("", "", "","",""), supportFragmentManager, lifecycle)
+        val adapter =
+            PagerAdapter(arrayListOf("", "", "", "", ""), supportFragmentManager, lifecycle)
         vp.adapter = adapter
 
         val dots = findViewById<DotsIndicator>(R.id.dotIndicator)
-
         dots.setViewPager2(vp)
 
         vp.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             override fun onPageScrolled(
-                position: Int,
-                positionOffset: Float,
-                positionOffsetPixels: Int
+                position: Int, positionOffset: Float, positionOffsetPixels: Int
             ) {
                 Log.d("TTT", "$position")
                 Log.d("TTT", "$positionOffset")

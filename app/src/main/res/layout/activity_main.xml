@@ -15,12 +15,12 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <uz.jalil.viewpagerindicator.DotsIndicator
+    <uz.jalil.viewpager_indicator.DotsIndicator
         android:id="@+id/dotIndicator"
         android:layout_width="wrap_content"
         android:layout_height="20dp"
         app:dotsColor="@color/black"
-        app:dotsCornerRadius="20dp"
+        app:dotsCornerRadius="30dp"
         app:dotsSpacing="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

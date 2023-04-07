@@ -1,4 +1,4 @@
-package uz.jalil.viewpagerindicator
+package uz.jalil.viewpager_indicator
 
 import android.content.Context
 import android.util.AttributeSet
@@ -247,7 +247,7 @@ class DotsIndicator @JvmOverloads constructor(
 
     fun createDotImage(): ImageView {
         val view = ImageView(context)
-        view.setImageResource(R.drawable.ic_dot)
+//        view.setImageResource(R.drawable.ic_dot)
         return view
     }
 
