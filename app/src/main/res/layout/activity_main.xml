@@ -15,16 +15,15 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <uz.jalil.viewpagerindicator.DotsIndicator
+    <uz.jalil.viewpager_indicator.DotsIndicator
         android:id="@+id/dotIndicator"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:dotsSize="40dp"
         app:dotsColor="@color/black"
-        app:dotsDrawable="@drawable/ic_launcher_background"
+        app:dotsSize="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/vp_slide"
         app:selectedDotColor="#FF9800"
-        app:selectedDotDrawable="@drawable/ic_launcher_foreground" />
+        app:selectedDotsSize="30dp" />
 </androidx.constraintlayout.widget.ConstraintLayout>

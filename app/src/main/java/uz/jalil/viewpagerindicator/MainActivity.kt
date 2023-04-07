@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import androidx.viewpager2.widget.ViewPager2
+import uz.jalil.viewpager_indicator.DotsIndicator
 
 class MainActivity : AppCompatActivity() {
     @SuppressLint("MissingInflatedId")

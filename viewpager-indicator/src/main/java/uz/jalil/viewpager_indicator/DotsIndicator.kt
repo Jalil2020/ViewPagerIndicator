@@ -1,4 +1,4 @@
-package uz.jalil.viewpagerindicator
+package uz.jalil.viewpager_indicator
 
 import android.content.Context
 import android.content.res.ColorStateList
@@ -14,7 +14,6 @@ import android.widget.LinearLayout
 import androidx.recyclerview.widget.RecyclerView.AdapterDataObserver
 import androidx.viewpager2.widget.ViewPager2
 import androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback
-
 
 /**
  *    Created by Jalil Boynazarov on 06.04.2023.
@@ -40,7 +39,7 @@ class DotsIndicator @JvmOverloads constructor(
     private var smallDotResource: Drawable? = null
     private var largeDotResource: Drawable? = null
 
-    private var dotsWidthFactor = 2.5f
+    private var dotsWidthFactor = 1.0f
 
     /**
      * Initiate views & attributes
@@ -69,7 +68,7 @@ class DotsIndicator @JvmOverloads constructor(
             dotsSize = a.getDimension(R.styleable.DotsIndicator_dotsSize, dotsSize)
             selectedDotsSize =
                 a.getDimension(R.styleable.DotsIndicator_selectedDotsSize, selectedDotsSize)
-
+            dotsWidthFactor = selectedDotsSize / dotsSize
             dotsSpacing = a.getDimension(R.styleable.DotsIndicator_dotsSpacing, dotsSpacing)
             isAllDot = a.getBoolean(R.styleable.DotsIndicator_dots_all, false)
             a.recycle()
