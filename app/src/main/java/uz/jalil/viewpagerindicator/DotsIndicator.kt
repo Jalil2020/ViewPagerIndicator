@@ -1,8 +1,12 @@
-package uz.jalil.viewpager_indicator
+package uz.jalil.viewpagerindicator
 
 import android.content.Context
+import android.content.res.ColorStateList
+import android.graphics.Color
+import android.graphics.drawable.Drawable
 import android.util.AttributeSet
 import android.util.Log
+import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
@@ -24,15 +28,19 @@ class DotsIndicator @JvmOverloads constructor(
     private var dots: MutableList<ImageView>? = null
     private var viewPager2: ViewPager2? = null
     private var dotsSize = 0f
-    private var dotsCornerRadius = 0f
+    private var selectedDotsSize = 0f
     private var dotsSpacing = 0f
     private var currentPage = 0
-    private var dotsWidthFactor = 0f
     private var dotsColor = 0
     private var selectedDotColor = 0
     private var dotsClickable = false
     private var isAllDot = false
     private var pageChangedListener2: OnPageChangeCallback? = null
+    private var DEFAULT_POINT_COLOR = Color.GRAY
+    private var smallDotResource: Drawable? = null
+    private var largeDotResource: Drawable? = null
+
+    private var dotsWidthFactor = 2.5f
 
     /**
      * Initiate views & attributes
@@ -44,25 +52,24 @@ class DotsIndicator @JvmOverloads constructor(
     private fun init(attrs: AttributeSet?) {
         dots = ArrayList()
         orientation = HORIZONTAL
+        gravity = Gravity.CENTER_VERTICAL
 
         dotsSize = dpToPx(16).toFloat()
+        selectedDotsSize = dotsSize * 2
         dotsSpacing = dpToPx(14).toFloat()
-        dotsCornerRadius = dotsSize / 2
         dotsClickable = true
         if (attrs != null) {
             val a = context.obtainStyledAttributes(attrs, R.styleable.DotsIndicator)
+            smallDotResource = a.getDrawable(R.styleable.DotsIndicator_dotsDrawable)
+            largeDotResource = a.getDrawable(R.styleable.DotsIndicator_selectedDotDrawable)
+            selectedDotColor =
+                a.getColor(R.styleable.DotsIndicator_selectedDotColor, DEFAULT_POINT_COLOR)
+            dotsColor = a.getColor(R.styleable.DotsIndicator_dotsColor, DEFAULT_POINT_COLOR)
 
-            /*   selectedDotColor =
-                   a.getColor(R.styleable.DotsIndicator_selectedDotColor, DEFAULT_POINT_COLOR)
-               dotsColor = a.getColor(R.styleable.DotsIndicator_dotsColor, DEFAULT_POINT_COLOR)*/
-            dotsWidthFactor = a.getFloat(R.styleable.DotsIndicator_dotsWidthFactor, 2.5f)
-            if (dotsWidthFactor < 1) {
-                dotsWidthFactor = 2.5f
-            }
             dotsSize = a.getDimension(R.styleable.DotsIndicator_dotsSize, dotsSize)
-            dotsCornerRadius =
-                a.getDimension(R.styleable.DotsIndicator_dotsCornerRadius, dotsSize / 2).toInt()
-                    .toFloat()
+            selectedDotsSize =
+                a.getDimension(R.styleable.DotsIndicator_selectedDotsSize, selectedDotsSize)
+
             dotsSpacing = a.getDimension(R.styleable.DotsIndicator_dotsSpacing, dotsSpacing)
             isAllDot = a.getBoolean(R.styleable.DotsIndicator_dots_all, false)
             a.recycle()
@@ -90,6 +97,11 @@ class DotsIndicator @JvmOverloads constructor(
                 removeDots(dots!!.size - viewPager2!!.adapter!!.itemCount)
             }
             setUpSelectedColors(currentPage)
+            val dotWidth = (dotsSize + dotsSize * (dotsWidthFactor - 1)).toInt()
+
+            if (dots!!.size > 0) {
+                setDotWidth(dots!![0], dotWidth)
+            }
             setUpDotsAnimators2()
         } else {
             Log.e(
@@ -114,6 +126,7 @@ class DotsIndicator @JvmOverloads constructor(
             addView(imageView)
             val lp = imageView.layoutParams as LayoutParams
             lp.setMargins(dotsSpacing.toInt(), 0, dotsSpacing.toInt(), 0)
+            setDotWidth(imageView, dotsSize.toInt())
         }
     }
 
@@ -171,16 +184,20 @@ class DotsIndicator @JvmOverloads constructor(
      * @param positionOffset Value from [0, 1) indicating the offset from the page at position.
      */
     private fun calculateDotWidth(position: Int, positionOffset: Float) {
+
         if (position != currentPage && positionOffset == 0f || currentPage < position) {
             setDotWidth(dots!![currentPage], dotsSize.toInt())
             currentPage = position
         }
+
         if (Math.abs(currentPage - position) > 1) {
             setDotWidth(dots!![currentPage], dotsSize.toInt())
             currentPage = position
         }
-        var dot: View = dots!![currentPage]
-        var nextDot: View? = null
+
+        var dot: ImageView = dots!![currentPage]
+        var nextDot: ImageView? = null
+
         if (currentPage == position && currentPage + 1 < dots!!.size) {
             nextDot = dots!![currentPage + 1]
         } else if (currentPage > position) {
@@ -210,10 +227,24 @@ class DotsIndicator @JvmOverloads constructor(
      */
     private fun setUpSelectedColors(position: Int) {
         if (dots != null && dots!!.size > 0) {
+
             for (elevationItem in dots!!) {
-                elevationItem.setImageResource(R.drawable.ic_dot)
+                if (smallDotResource == null) {
+                    elevationItem.setImageResource(R.drawable.ic_dot)
+                    elevationItem.imageTintList = ColorStateList.valueOf(dotsColor)
+                } else {
+                    elevationItem.setImageDrawable(smallDotResource)
+                }
             }
-            dots!![position].setImageResource(R.drawable.ic_dot2)
+
+            if (largeDotResource == null) {
+                dots!![position].setImageResource(R.drawable.ic_dot2)
+                dots!![position].imageTintList = ColorStateList.valueOf(selectedDotColor)
+
+            } else {
+                dots!![position].setImageDrawable(largeDotResource)
+            }
+
         }
     }
 
@@ -247,7 +278,6 @@ class DotsIndicator @JvmOverloads constructor(
 
     fun createDotImage(): ImageView {
         val view = ImageView(context)
-//        view.setImageResource(R.drawable.ic_dot)
         return view
     }
 

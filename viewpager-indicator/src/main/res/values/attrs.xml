@@ -1,5 +1,5 @@
 <resources>
-    <attr name="dotsColor" format="color" />
+<!--    <attr name="dotsColor" format="color" />
     <attr name="selectedDotColor" format="color" />
     <attr name="dotsStrokeColor" format="color" />
     <attr name="dotsSize" format="dimension" />
@@ -49,5 +49,5 @@
         <attr name="dotsStrokeColor" />
         <attr name="dotsClickable" />
         <attr name="dots_filled" />
-    </declare-styleable>
+    </declare-styleable>-->
 </resources>
